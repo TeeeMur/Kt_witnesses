@@ -3,6 +3,7 @@ package com.example.ktwitnesses
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.Home
+import androidx.compose.material.icons.filled.Info
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.ShoppingCart
 import androidx.compose.ui.graphics.vector.ImageVector
@@ -29,5 +30,13 @@ sealed class NavRoutes(
 		route = "profile_screen",
 		image = Icons.Filled.Person,
 		title = "Profile")
+	data object Order : NavRoutes(
+		route = "checkout_screen",
+		image = Icons.Filled.ShoppingCart,
+		title = "Checkout")
+	data object DeliveryDetails  : NavRoutes(
+		route = "delivery_details_screen",
+		image = Icons.Filled.Info,
+		title = "Delivery Details")
 }
 

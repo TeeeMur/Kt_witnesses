@@ -38,7 +38,10 @@ fun BottomNavigationBar(navController: NavController) {
 					)
 				},
 				label = {
-					Text(text = it.title!!)
+					Text(text = it.title!!) {
+						Screen.Order -> "Заказ"
+						Screen.Details -> "Детали"
+					}
 				},
 				alwaysShowLabel = false,
 			)
