@@ -1,6 +1,7 @@
 package com.example.ktwitnesses.data
 
 import com.example.ktwitnesses.network.BookService
+import kotlin.random.Random
 
 class BooksRepoImpl (
 	private val bookService: BookService
@@ -10,9 +11,12 @@ class BooksRepoImpl (
 		maxResults: Int
 	): List<Book> = bookService.bookSearch(query, maxResults).items.map { items ->
 		Book(
+			id = items.id,
 			title = items.volumeInfo?.title,
 			previewLink = items.volumeInfo?.previewLink,
-			imageLink = items.volumeInfo?.imageLinks?.thumbnail
+			authors = items.volumeInfo?.authors,
+			imageLink = items.volumeInfo?.imageLinks?.thumbnail,
+			price = Random.nextInt(10, 10000)
 		)
 	}
 }
