@@ -1,4 +1,4 @@
-package com.example.ktwitnesses
+package com.example.ktwitnesses.ui
 
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Favorite

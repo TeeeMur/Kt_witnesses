@@ -1,4 +1,4 @@
-package com.example.ktwitnesses
+package com.example.ktwitnesses.ui
 
 import androidx.compose.material3.Icon
 import androidx.compose.material3.NavigationBar
