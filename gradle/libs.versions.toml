@@ -21,8 +21,12 @@ firebaseCrashlyticsBuildtools = "3.0.2"
 uiTestAndroid = "1.7.6"
 engageCore = "1.5.5"
 datastoreCoreAndroid = "1.1.1"
+gmsVersion = "4.4.2"
+bomVersion = "33.7.0"
 
 [libraries]
+firebase-bom = { group = "com.google.firebase", name = "firebase-bom", version.ref = "bomVersion" }
+firebase-auth = { module = "com.google.firebase:firebase-auth" }
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
 androidx-material = { module = "androidx.compose.material:material", version.ref = "material" }
 androidx-navigation-compose = { module = "androidx.navigation:navigation-compose", version.ref = "navigationCompose" }
@@ -54,4 +58,5 @@ androidx-datastore-core-android = { group = "androidx.datastore", name = "datast
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
 jetbrains-kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
+gms = { id = "com.google.gms.google-services", version.ref = "gmsVersion" }
 
