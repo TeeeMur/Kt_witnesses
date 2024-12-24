@@ -5,22 +5,33 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.requiredHeight
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.itemsIndexed
 //noinspection UsingMaterialAndMaterial3Libraries
 import androidx.compose.material.Button
+import androidx.compose.material.ButtonDefaults
 //noinspection UsingMaterialAndMaterial3Libraries
 import androidx.compose.material.Card
+import androidx.compose.material.CircularProgressIndicator
+import androidx.compose.material.MaterialTheme
+import androidx.compose.material.Scaffold
+import androidx.compose.material.TopAppBar
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
@@ -28,7 +39,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
-import coil.request.ImageRequest
 import com.example.ktwitnesses.BooksUiState
 import com.example.ktwitnesses.R
 import com.example.ktwitnesses.data.Book
@@ -71,7 +81,7 @@ fun BooksCard(
 			}
 			AsyncImage(
 				modifier = modifier.fillMaxWidth(),
-				model = ImageRequest.Builder(context = LocalContext.current)
+				model = coil.request.ImageRequest.Builder(context = LocalContext.current)
 					.data(book.imageLink?.replace("http", "https"))
 					.crossfade(true)
 					.build(),
@@ -134,8 +144,41 @@ fun FavouriteScreen() {
 }
 
 @Composable
-fun CartScreen() {
-	Text("Cart")
+fun CartScreen(
+	onProceedToOrder: () -> Unit
+) {
+	Scaffold(
+		topBar = {
+			TopAppBar(
+				title = { Text("Корзина") }
+			)
+		}
+	) { paddingValues ->
+		Column(
+			modifier = Modifier
+				.fillMaxSize()
+				.padding(paddingValues)
+				.padding(16.dp)
+		) {
+
+			Spacer(modifier = Modifier.weight(1f))
+			Button(
+				onClick = { onProceedToOrder() },
+				modifier = Modifier
+					.fillMaxWidth()
+					.padding(8.dp)
+					.clip(MaterialTheme.shapes.medium),
+				colors = ButtonDefaults.buttonColors(
+					backgroundColor = MaterialTheme.colors.surface
+				)
+			) {
+				Text(
+					text = "Оформить заказ",
+					color = MaterialTheme.colors.onSurface
+				)
+			}
+		}
+	}
 }
 
 @Composable

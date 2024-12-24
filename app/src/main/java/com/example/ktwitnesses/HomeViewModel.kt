@@ -13,8 +13,6 @@ import com.example.ktwitnesses.data.Book
 import com.example.ktwitnesses.data.BooksRepoImpl
 import com.example.ktwitnesses.data.BooksRepository
 import kotlinx.coroutines.launch
-import okio.IOException
-import retrofit2.HttpException
 
 @Suppress("ConvertObjectToDataObject")
 sealed interface BooksUiState {
@@ -40,9 +38,9 @@ class BooksViewModel(
 			booksUiState =
 				try {
 					BooksUiState.Success(booksRepository.getBooks(query, maxResults))
-				} catch (e: IOException) {
+				} catch (e: java.io.IOException) {
 					BooksUiState.Error
-				} catch (e: HttpException) {
+				} catch (e: coil.network.HttpException) {
 					BooksUiState.Error
 				}
 		}
