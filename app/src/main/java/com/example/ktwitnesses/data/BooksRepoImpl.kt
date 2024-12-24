@@ -18,7 +18,7 @@ class BooksRepoImpl (
 			imageLink = items.volumeInfo?.imageLinks?.thumbnail,
 			genre = items.volumeInfo?.categories,
 			description = items.volumeInfo?.description,
-			price = Random.nextInt(10, 10000)
+			price = Random.nextInt(10, 1000)
 		)
 	}
 }

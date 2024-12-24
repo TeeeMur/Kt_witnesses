@@ -72,8 +72,8 @@ fun BookScreen(
 		},
 		bottomBar = {
 			Row {
-				val booksInCartCount = cartViewModel.getFromCart(book).second
-				if (booksInCartCount == 0) {
+				val booksInCartCount = cartViewModel.cartItems.collectAsState()
+				if (booksInCartCount.value.getOrDefault(book, 0) == 0) {
 					Button(onClick = { cartViewModel.addToCart(book) },
 						modifier = Modifier.fillMaxWidth()) {
 						Row(
@@ -91,21 +91,19 @@ fun BookScreen(
 						modifier = Modifier.fillMaxWidth()
 					) {
 						Button(
-							onClick = {},
+							onClick = {cartViewModel.removeFromCart(book)},
 							modifier = Modifier
 								.padding(horizontal = 16.dp, vertical = 8.dp)
 						) {
 							Text("-")
 						}
-
 						Text(
-							text = "${cartViewModel.getFromCart(book).second}",
+							text = "${booksInCartCount.value.getOrDefault(book, 0)}",
 							style = MaterialTheme.typography.body1,
 							color = Color.Gray
 						)
-
 						Button(
-							onClick = {},
+							onClick = {cartViewModel.addToCart(book)},
 							modifier = Modifier
 								.padding(horizontal = 16.dp, vertical = 8.dp)
 						) {

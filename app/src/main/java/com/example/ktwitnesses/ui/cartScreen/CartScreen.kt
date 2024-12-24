@@ -147,9 +147,7 @@ fun CartItem(
                 contentDescription = stringResource(id = R.string.content_description),
                 contentScale = ContentScale.Crop
             )
-
             Spacer(modifier = Modifier.width(16.dp))
-
             Column(
                 modifier = Modifier
                     .weight(1f)
