@@ -51,10 +51,12 @@ fun CheckoutScreen(checkoutViewModel: CheckoutViewModel = viewModel()) {
             contentPadding = PaddingValues(16.dp)
         ) {
             items(cartItems.toList()) { book ->
-                CartCheckoutItem(
-                    book = book.second.book,
-                    quantity = cartItems[book.first]?.quantity ?: 0,
-                )
+                if (book.second.isCheckout) {
+                    CartCheckoutItem(
+                        book = book.second.book,
+                        quantity = cartItems[book.first]?.quantity ?: 0,
+                    )
+                }
             }
         }
 
@@ -84,6 +86,7 @@ fun CheckoutScreen(checkoutViewModel: CheckoutViewModel = viewModel()) {
     }
 }
 
+@Suppress("NonSkippableComposable")
 @Composable
 fun CartCheckoutItem(
     book: Book,
@@ -132,6 +135,8 @@ fun CartCheckoutItem(
                         style = MaterialTheme.typography.h6,
                         fontWeight = FontWeight.Bold
                     )
+
+                    Spacer(modifier = Modifier.height(8.dp))
 
                     Text(
                         text = "x$quantity",

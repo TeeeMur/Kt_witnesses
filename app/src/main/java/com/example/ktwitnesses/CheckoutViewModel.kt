@@ -37,22 +37,23 @@ class CheckoutViewModel : ViewModel() {
             val updatedCart = _checkoutCartItems.value.toMutableMap()
             updatedCart[book.id] = BookCart(book, quantity, true)
             _checkoutCartItems.value = updatedCart
+            updateTotalPrice()
         }
-        updateTotalPrice()
     }
 
     fun setQuantityToCheckoutCart(book: Book, quantity: Int) {
         viewModelScope.launch {
             val updatedCart = _checkoutCartItems.value.toMutableMap()
             if (quantity <= 0){
+                updatedCart[book.id]?.isCheckout = false
                 updatedCart.remove(book.id)
             }
             else{
                 updatedCart[book.id]?.quantity = quantity
             }
             _checkoutCartItems.value = updatedCart
+            updateTotalPrice()
         }
-        updateTotalPrice()
     }
 
     private fun updateTotalPrice() {

@@ -1,6 +1,5 @@
 package com.example.ktwitnesses.ui
 
-import CartViewModel
 import android.annotation.SuppressLint
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
@@ -27,11 +26,17 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewModelScope
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
+import com.example.ktwitnesses.CartViewModel
 import com.example.ktwitnesses.CheckoutViewModel
 import com.example.ktwitnesses.R
 import com.example.ktwitnesses.data.Book
+import kotlinx.coroutines.async
+import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 
 @SuppressLint("StateFlowValueCalledInComposition")
 @Composable
@@ -41,6 +46,7 @@ fun CartScreen(
     navToCheckout: () -> Unit
 ) {
     val cartItems by cartViewModel.cartItems.collectAsState()
+    val coroutineScope = rememberCoroutineScope()
 
     if (cartItems.isEmpty()) {
         Box(
@@ -61,13 +67,17 @@ fun CartScreen(
                         quantity = cartItems[book] ?: 0,
                         onRemove =
                         {
-                            checkoutViewModel.setQuantityToCheckoutCart(book, cartItems[book] ?: 0)
-                            cartViewModel.removeFromCart(book)
+                            coroutineScope.launch {
+                                async {cartViewModel.removeFromCart(book)}.await()
+                                checkoutViewModel.setQuantityToCheckoutCart(book, cartItems[book] ?: 0)
+                            }
                         },
                         onAdd =
                         {
-                            cartViewModel.addToCart(book)
-                            checkoutViewModel.setQuantityToCheckoutCart(book, cartItems[book] ?: 0)
+                            coroutineScope.launch {
+                                async { cartViewModel.addToCart(book) }.await()
+                                checkoutViewModel.setQuantityToCheckoutCart(book, cartItems[book] ?: 0)
+                            }
                         },
                         isChecked = checkoutViewModel.checkoutCartItems.value[book.id]?.isCheckout
                             ?: false,
@@ -99,7 +109,8 @@ fun CartScreen(
                     onClick = { navToCheckout() },
                     modifier = Modifier
                         .fillMaxWidth()
-                        .height(56.dp)
+                        .height(56.dp),
+                    enabled = checkoutViewModel.totalPrice.collectAsState().value > 0
                 ) {
                     Text("Оформить заказ", fontSize = 18.sp)
                 }
@@ -155,7 +166,7 @@ fun CartItem(
                     .weight(1f)
             ) {
                 Row(
-                    horizontalArrangement = Arrangement.SpaceBetween,
+                    horizontalArrangement = Arrangement.Start,
                     verticalAlignment = Alignment.Top,
                 ) {
                     Text(
