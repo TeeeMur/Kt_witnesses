@@ -1,5 +1,6 @@
 package com.example.ktwitnesses.ui.homeScreen
 
+import CartViewModel
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -167,7 +168,7 @@ fun BooksGridScreen(
 		horizontalArrangement = Arrangement.spacedBy(12.dp),
 	) {
 		itemsIndexed(books) { index, book ->
-			BooksCard(book = book, modifier, navController, index)
+			BooksCard(book = book, modifier, navController, bookid = index)
 		}
 	}
 }
@@ -214,7 +215,7 @@ fun HomeBooksScreen(
 @Composable
 fun HomeScreen(
 	homeViewModel: HomeViewModel,
-	navController: NavController
+	navController: NavController,
 ) {
 	var textFieldValue by remember { mutableStateOf("") }
 	Scaffold(

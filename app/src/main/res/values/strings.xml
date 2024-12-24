@@ -8,4 +8,5 @@
     <string name="content_description">Book</string>
     <string name="price_currency">₽</string>
     <string name="searchfield_placeholder">Начните искать…</string>
+    <string name="add_to_cart">В корзину</string>
 </resources>

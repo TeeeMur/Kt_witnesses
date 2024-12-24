@@ -1,5 +1,6 @@
 package com.example.ktwitnesses.ui.bookScreen
 
+import CartViewModel
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
@@ -10,10 +11,12 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.requiredHeight
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.Button
 //noinspection UsingMaterialAndMaterial3Libraries
 import androidx.compose.material.Icon
 //noinspection UsingMaterialAndMaterial3Libraries
 import androidx.compose.material.IconButton
+import androidx.compose.material.MaterialTheme
 //noinspection UsingMaterialAndMaterial3Libraries
 import androidx.compose.material.Scaffold
 //noinspection UsingMaterialAndMaterial3Libraries
@@ -22,9 +25,11 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.outlined.ArrowBack
 import androidx.compose.material.icons.outlined.FavoriteBorder
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
@@ -43,7 +48,8 @@ fun BookScreen(
 	bookid: Int,
 	onLike: () -> Unit,
 	homeViewModel: HomeViewModel,
-	navController: NavController
+	navController: NavController,
+	cartViewModel: CartViewModel,
 ) {
 	val book = (homeViewModel.booksUiState as BooksUiState.Success).bookSearch[bookid]
 	Scaffold(
@@ -63,10 +69,56 @@ fun BookScreen(
 					}
 				)
 			}
+		},
+		bottomBar = {
+			Row {
+				val booksInCartCount = cartViewModel.getFromCart(book).second
+				if (booksInCartCount == 0) {
+					Button(onClick = { cartViewModel.addToCart(book) },
+						modifier = Modifier.fillMaxWidth()) {
+						Row(
+							horizontalArrangement = Arrangement.SpaceBetween
+						) {
+							Text(text = stringResource(R.string.add_to_cart))
+							Text(text = book.price.toString() + stringResource(R.string.price_currency))
+						}
+					}
+				}
+				else {
+					Row(
+						horizontalArrangement = Arrangement.SpaceBetween,
+						verticalAlignment = Alignment.CenterVertically,
+						modifier = Modifier.fillMaxWidth()
+					) {
+						Button(
+							onClick = {},
+							modifier = Modifier
+								.padding(horizontal = 16.dp, vertical = 8.dp)
+						) {
+							Text("-")
+						}
+
+						Text(
+							text = "${cartViewModel.getFromCart(book).second}",
+							style = MaterialTheme.typography.body1,
+							color = Color.Gray
+						)
+
+						Button(
+							onClick = {},
+							modifier = Modifier
+								.padding(horizontal = 16.dp, vertical = 8.dp)
+						) {
+							Text("+")
+						}
+					}
+				}
+			}
 		}
 	) { paddingValues ->
 		Column(
-			modifier = Modifier.padding(paddingValues)
+			modifier = Modifier
+				.padding(paddingValues)
 				.fillMaxSize(),
 			horizontalAlignment = Alignment.CenterHorizontally
 		) {
@@ -108,11 +160,11 @@ fun BookScreen(
 			book.description?.let{
 				Text(text = book.description)
 			}
-			book.genres?.let{
+			book.genre?.let{
 				FlowRow(
 					maxItemsInEachRow = 3
 				) {
-					book.genres.forEach {
+					book.genre.forEach {
 						Text(text = it)
 					}
 				}

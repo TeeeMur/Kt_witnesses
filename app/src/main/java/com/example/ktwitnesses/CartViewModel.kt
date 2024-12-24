@@ -9,6 +9,10 @@ class CartViewModel : ViewModel() {
     private val _cartItems = MutableStateFlow<Map<Book, Int>>(emptyMap())
     val cartItems: StateFlow<Map<Book, Int>> = _cartItems
 
+    fun getFromCart(book: Book): Pair<Book, Int> {
+        return Pair(book, _cartItems.value.getOrDefault(book, 0))
+    }
+
     fun addToCart(book: Book) {
         viewModelScope.launch {
             val updatedCart = _cartItems.value.toMutableMap()
