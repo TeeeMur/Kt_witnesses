@@ -1,6 +1,7 @@
 package com.example.ktwitnesses.ui
 
 import CartViewModel
+import android.annotation.SuppressLint
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -28,12 +29,16 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
+import com.example.ktwitnesses.CheckoutViewModel
 import com.example.ktwitnesses.R
 import com.example.ktwitnesses.data.Book
 
+@SuppressLint("StateFlowValueCalledInComposition")
 @Composable
-fun CartScreen(viewModel: CartViewModel = viewModel()) {
-    val cartItems by viewModel.cartItems.collectAsState()
+fun CartScreen(cartViewModel: CartViewModel = viewModel(),
+               checkoutViewModel: CheckoutViewModel = viewModel(),
+               navToCheckout: () -> Unit) {
+    val cartItems by cartViewModel.cartItems.collectAsState()
 
     if (cartItems.isEmpty()) {
         Box(
@@ -52,24 +57,38 @@ fun CartScreen(viewModel: CartViewModel = viewModel()) {
                     CartItem(
                         book = book,
                         quantity = cartItems[book] ?: 0,
-                        onRemove = { viewModel.removeFromCart(book) },
-                        onAdd = { viewModel.addToCart(book) })
+                        onRemove =
+                        {
+                            checkoutViewModel.setQuantityToCheckoutCart(book, cartItems[book] ?: 0)
+                            cartViewModel.removeFromCart(book)
+                        },
+                        onAdd =
+                        {
+                            cartViewModel.addToCart(book)
+                            checkoutViewModel.setQuantityToCheckoutCart(book, cartItems[book] ?: 0)
+                        },
+                        isChecked = checkoutViewModel.checkoutCartItems.value[book.id]?.isCheckout ?: false,
+                        onCheckboxChange = { checkoutViewModel.toggleCheckbox(book, cartItems[book] ?: 0) }
+                    )
                 }
             }
 
-            Box(
+            Column(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(16.dp)
                     .background(MaterialTheme.colors.surface)
             ) {
                 Text(
-                    text = "Итого: ${} ",
+                    text = "Итого: ${checkoutViewModel.totalPrice.collectAsState().value} Руб.",
                     style = MaterialTheme.typography.h6,
-                    fontWeight = FontWeight.Bold
+                    fontWeight = FontWeight.Bold,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(56.dp)
                 )
                 Button(
-                    onClick = { /* Обработка нажатия кнопки */ },
+                    onClick = { navToCheckout() },
                     modifier = Modifier
                         .fillMaxWidth()
                         .height(56.dp)
@@ -84,10 +103,13 @@ fun CartScreen(viewModel: CartViewModel = viewModel()) {
 @Composable
 fun CartItem(
     book: Book,
-    quantity: Int, onRemove: () -> Unit,
-    onAdd: () -> Unit)
+    quantity: Int,
+    onRemove: () -> Unit,
+    onAdd: () -> Unit,
+    isChecked: Boolean,
+    onCheckboxChange: (Boolean) -> Unit)
 {
-    var isChecked by remember { mutableStateOf(false) }
+    var isCheckedCart by remember { mutableStateOf(isChecked) }
 
     Card(
         modifier = Modifier
@@ -132,8 +154,11 @@ fun CartItem(
                         fontWeight = FontWeight.Bold
                     )
                     Checkbox(
-                        checked = isChecked,
-                        onCheckedChange = { isChecked = it },
+                        checked = isCheckedCart,
+                        onCheckedChange = { value: Boolean ->
+                            isCheckedCart = value
+                            onCheckboxChange(value)
+                        },
                         modifier = Modifier.align(Alignment.CenterVertically)
                     )
                 }

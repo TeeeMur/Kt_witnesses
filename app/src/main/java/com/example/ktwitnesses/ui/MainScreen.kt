@@ -23,12 +23,15 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.ktwitnesses.BooksViewModel
+import com.example.ktwitnesses.CheckoutViewModel
 import com.example.ktwitnesses.R
 
 @Composable
 fun MainScreen() {
     val navController = rememberNavController()
     val cartViewModel: CartViewModel = viewModel()
+    val checkoutViewModel: CheckoutViewModel = viewModel()
+
     Column(Modifier.padding(8.dp)) {
         NavHost(
             navController,
@@ -85,11 +88,33 @@ fun MainScreen() {
                             .padding(it),
                         color = MaterialTheme.colors.background
                     ) {
-                        CartScreen(cartViewModel)
+                        CartScreen(cartViewModel, checkoutViewModel, {navController.navigate(NavRoutes.Checkout.route)})
                     }
                 }
             }
             composable(NavRoutes.Profile.route) { ProfileScreen() }
+            composable(NavRoutes.Checkout.route) {
+                Scaffold(
+                    modifier = Modifier.fillMaxSize(),
+                    topBar = {
+                        TopAppBar(
+                            title = {
+                                Text(text = stringResource(id = R.string.making_order))
+                            }
+                        )
+                    }
+
+                ) {
+                    Surface(
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .padding(it),
+                        color = MaterialTheme.colors.background
+                    ) {
+                        CheckoutScreen(checkoutViewModel)
+                    }
+                }
+            }
         }
     }
 }
