@@ -13,23 +13,40 @@ import com.example.ktwitnesses.data.Book
 import com.example.ktwitnesses.data.BooksRepoImpl
 import com.example.ktwitnesses.data.BooksRepository
 import kotlinx.coroutines.launch
+import retrofit2.HttpException
+import java.io.IOException
 
-@Suppress("ConvertObjectToDataObject")
 sealed interface BooksUiState {
 	data class Success(val bookSearch: List<Book>) : BooksUiState
-	object Error : BooksUiState
-	object Loading : BooksUiState
+	data object Error : BooksUiState
+	data object Loading : BooksUiState
 }
 
-class BooksViewModel(
+class HomeViewModel(
 	private val booksRepository: BooksRepository
-): ViewModel() {
+) : ViewModel() {
+
 	var booksUiState: BooksUiState by mutableStateOf(BooksUiState.Loading)
 		private set
 
-
 	init {
 		getBooks()
+	}
+
+	fun addBooks(query: String = "book", maxResults: Int = 40) {
+		viewModelScope.launch {
+			try {
+				val addedBooksList = booksRepository.getBooks(query, maxResults)
+				if (booksUiState is BooksUiState.Success) {
+					val tempList = (booksUiState as BooksUiState.Success).bookSearch
+					booksUiState = BooksUiState.Success(tempList + addedBooksList)
+				}
+			} catch (e: IOException) {
+				booksUiState = BooksUiState.Error
+			} catch (e: HttpException) {
+				booksUiState = BooksUiState.Error
+			}
+		}
 	}
 
 	fun getBooks(query: String = "book", maxResults: Int = 40) {
@@ -50,7 +67,7 @@ class BooksViewModel(
 		val Factory: ViewModelProvider.Factory = viewModelFactory {
 			initializer {
 				val booksRepository = BooksRepoImpl(BaseAppContainer.retrofitService)
-				BooksViewModel(booksRepository = booksRepository)
+				HomeViewModel(booksRepository = booksRepository)
 			}
 		}
 	}
