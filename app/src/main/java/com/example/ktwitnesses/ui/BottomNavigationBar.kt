@@ -1,5 +1,7 @@
 package com.example.ktwitnesses.ui
 
+import OrderViewModel
+import android.annotation.SuppressLint
 import androidx.compose.material3.Icon
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
@@ -7,9 +9,14 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.graphics.Color
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.NavGraph.Companion.findStartDestination
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
+import androidx.navigation.compose.rememberNavController
 
 @Composable
 fun BottomNavigationBar(navController: NavController) {
@@ -38,10 +45,7 @@ fun BottomNavigationBar(navController: NavController) {
 					)
 				},
 				label = {
-					Text(text = it.title!!) {
-						Screen.Order -> "Заказ"
-						Screen.Details -> "Детали"
-					}
+					Text(text = it.title!!)
 				},
 				alwaysShowLabel = false,
 			)

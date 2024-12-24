@@ -33,10 +33,6 @@ sealed class NavRoutes(
 	data object Order : NavRoutes(
 		route = "checkout_screen",
 		image = Icons.Filled.ShoppingCart,
-		title = "Checkout")
-	data object DeliveryDetails  : NavRoutes(
-		route = "delivery_details_screen",
-		image = Icons.Filled.Info,
-		title = "Delivery Details")
+		title = "Order")
 }
 
