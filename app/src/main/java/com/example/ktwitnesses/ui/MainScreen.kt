@@ -145,7 +145,8 @@ fun MainScreen() {
 							booksUiState = homeViewModel.booksUiState,
 							retryAction = { homeViewModel.getBooks() },
 							modifier = Modifier,
-							onMaxScroll = { homeViewModel.addBooks() }
+							onMaxScroll = { homeViewModel.addBooks() },
+							cartViewModel = cartViewModel
 						)
 					}
 				}
@@ -175,11 +176,6 @@ fun MainScreen() {
 				)
 			}
 			composable(NavRoutes.Cart.route) {
-				CartScreen(
-					onProceedToOrder = { navController.navigate(NavRoutes.Order.route) }
-				)
-			}
-			composable(NavRoutes.Order.route) {
 				Scaffold(
 					modifier = Modifier.fillMaxSize(),
 					topBar = {
@@ -200,6 +196,12 @@ fun MainScreen() {
 						CartScreen(cartViewModel, checkoutViewModel, {navController.navigate(NavRoutes.Checkout.route)})
 					}
 				}
+			}
+			composable(NavRoutes.Order.route) {
+				OrderScreen(
+					navController = navController,
+					onBackPressed = { navController.popBackStack() }
+				)
 			}
 			composable(NavRoutes.Profile.route) { ProfileScreen() }
 			composable(NavRoutes.Checkout.route) {

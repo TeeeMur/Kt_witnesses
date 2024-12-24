@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -63,6 +64,7 @@ fun ErrorScreen(retryAction: () -> Unit, modifier: Modifier = Modifier) {
 	}
 }
 
+@Suppress("NonSkippableComposable")
 @Composable
 fun BooksCard(
 	book: Book,
@@ -116,20 +118,20 @@ fun BooksCard(
 					softWrap = false,
 				)
 			}
-			Text(
-				text = book.price.toString() + stringResource(R.string.price_currency),
-				fontSize = 18.sp,
-				textAlign = TextAlign.Start,
-				modifier = modifier
-					.padding(top = 4.dp, bottom = 6.dp)
-					.fillMaxWidth(),
-			)
-			Button(
-				modifier = modifier
-				.padding(4.dp)
-				.fillMaxWidth()
-				.requiredHeight(296.dp),
-				onClick = { cartViewModel.addToCart(book);}) {
+			Row {
+				Text(
+					text = book.price.toString() + stringResource(R.string.price_currency),
+					fontSize = 18.sp,
+					textAlign = TextAlign.Start,
+					modifier = modifier
+						.padding(top = 4.dp, bottom = 6.dp),
+				)
+				Button(
+					modifier = modifier
+						.padding(4.dp)
+						.fillMaxWidth(),
+					onClick = { cartViewModel.addToCart(book);}) {
+				}
 			}
 		}
 	}
@@ -140,8 +142,8 @@ fun BooksCard(
 fun BooksGridScreen(
 	books: List<Book>,
 	modifier: Modifier,
+	onMaxScroll: () -> Unit,
 	cartViewModel: CartViewModel = viewModel()
-	onMaxScroll: () -> Unit
 ) {
 	val lazyVerticalGridState = rememberLazyGridState()
 	val firstVisibleItemIndex by remember { derivedStateOf { lazyVerticalGridState.firstVisibleItemIndex } }
@@ -181,6 +183,7 @@ fun HomeBooksScreen(
 	retryAction: () -> Unit,
 	onMaxScroll: () -> Unit,
 	modifier: Modifier,
+	cartViewModel: CartViewModel = viewModel()
 ) {
 	when (booksUiState) {
 		is BooksUiState.Loading -> LoadingScreen(modifier)
@@ -190,6 +193,7 @@ fun HomeBooksScreen(
 					books = booksUiState.bookSearch,
 					modifier = modifier,
 					onMaxScroll = onMaxScroll,
+					cartViewModel = cartViewModel
 				)
 			}
 		}

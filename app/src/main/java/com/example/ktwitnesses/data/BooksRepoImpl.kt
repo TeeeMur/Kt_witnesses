@@ -11,17 +11,13 @@ class BooksRepoImpl (
 		maxResults: Int
 	): List<Book> = bookService.bookSearch(query, maxResults).items.map { items ->
 		Book(
+			id = items.id.toString(),
 			authors = items.volumeInfo?.authors,
 			title = items.volumeInfo?.title,
 			previewLink = items.volumeInfo?.previewLink,
 			imageLink = items.volumeInfo?.imageLinks?.thumbnail,
 			genre = items.volumeInfo?.categories,
-			description = items.volumeInfo?.description
-			id = items.id.toString(),
-			title = items.volumeInfo?.title,
-			previewLink = items.volumeInfo?.previewLink,
-			authors = items.volumeInfo?.authors,
-			imageLink = items.volumeInfo?.imageLinks?.thumbnail,
+			description = items.volumeInfo?.description,
 			price = Random.nextInt(10, 10000)
 		)
 	}

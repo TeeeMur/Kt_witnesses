@@ -35,9 +35,11 @@ import com.example.ktwitnesses.data.Book
 
 @SuppressLint("StateFlowValueCalledInComposition")
 @Composable
-fun CartScreen(cartViewModel: CartViewModel = viewModel(),
-               checkoutViewModel: CheckoutViewModel = viewModel(),
-               navToCheckout: () -> Unit) {
+fun CartScreen(
+    cartViewModel: CartViewModel = viewModel(),
+    checkoutViewModel: CheckoutViewModel = viewModel(),
+    navToCheckout: () -> Unit
+) {
     val cartItems by cartViewModel.cartItems.collectAsState()
 
     if (cartItems.isEmpty()) {
@@ -67,8 +69,14 @@ fun CartScreen(cartViewModel: CartViewModel = viewModel(),
                             cartViewModel.addToCart(book)
                             checkoutViewModel.setQuantityToCheckoutCart(book, cartItems[book] ?: 0)
                         },
-                        isChecked = checkoutViewModel.checkoutCartItems.value[book.id]?.isCheckout ?: false,
-                        onCheckboxChange = { checkoutViewModel.toggleCheckbox(book, cartItems[book] ?: 0) }
+                        isChecked = checkoutViewModel.checkoutCartItems.value[book.id]?.isCheckout
+                            ?: false,
+                        onCheckboxChange = {
+                            checkoutViewModel.toggleCheckbox(
+                                book,
+                                cartItems[book] ?: 0
+                            )
+                        }
                     )
                 }
             }
@@ -100,6 +108,7 @@ fun CartScreen(cartViewModel: CartViewModel = viewModel(),
     }
 }
 
+@Suppress("NonSkippableComposable")
 @Composable
 fun CartItem(
     book: Book,
@@ -107,8 +116,8 @@ fun CartItem(
     onRemove: () -> Unit,
     onAdd: () -> Unit,
     isChecked: Boolean,
-    onCheckboxChange: (Boolean) -> Unit)
-{
+    onCheckboxChange: (Boolean) -> Unit
+) {
     var isCheckedCart by remember { mutableStateOf(isChecked) }
 
     Card(
@@ -145,9 +154,10 @@ fun CartItem(
                 modifier = Modifier
                     .weight(1f)
             ) {
-                Row(horizontalArrangement = Arrangement.SpaceBetween,
+                Row(
+                    horizontalArrangement = Arrangement.SpaceBetween,
                     verticalAlignment = Alignment.Top,
-                    ) {
+                ) {
                     Text(
                         text = book.title.toString(),
                         style = MaterialTheme.typography.h6,
