@@ -14,7 +14,7 @@ class BooksRepoImpl (
 			title = items.volumeInfo?.title,
 			previewLink = items.volumeInfo?.previewLink,
 			imageLink = items.volumeInfo?.imageLinks?.thumbnail,
-			genre = items.volumeInfo?.categories,
+			genres = items.volumeInfo?.categories,
 			description = items.volumeInfo?.description
 		)
 	}

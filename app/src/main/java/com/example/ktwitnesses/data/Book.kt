@@ -7,5 +7,5 @@ data class Book(
 	val imageLink: String?,
 	val price: Int = 500,
 	val description: String?,
-	val genre: List<String>?,
+	val genres: List<String>?,
 )

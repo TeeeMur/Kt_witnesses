@@ -55,11 +55,13 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavController
 import coil.compose.AsyncImage
 import com.example.ktwitnesses.BooksUiState
 import com.example.ktwitnesses.HomeViewModel
 import com.example.ktwitnesses.R
 import com.example.ktwitnesses.data.Book
+import com.example.ktwitnesses.ui.NavRoutes
 
 @Composable
 fun ErrorScreen(retryAction: () -> Unit, modifier: Modifier = Modifier) {
@@ -79,7 +81,9 @@ fun ErrorScreen(retryAction: () -> Unit, modifier: Modifier = Modifier) {
 @Composable
 fun BooksCard(
 	book: Book,
-	modifier: Modifier
+	modifier: Modifier,
+	navController: NavController,
+	bookid: Int
 ) {
 	Card(
 		modifier = modifier
@@ -87,7 +91,7 @@ fun BooksCard(
 			.fillMaxWidth()
 			.clip(RoundedCornerShape(topStart = 24.dp, topEnd = 24.dp))
 			.clickable {
-
+				navController.navigate(NavRoutes.BookCard.route + "/$bookid")
 			},
 		elevation = 0.dp
 	) {
@@ -147,7 +151,8 @@ fun BooksCard(
 fun BooksGridScreen(
 	books: List<Book>,
 	modifier: Modifier,
-	onMaxScroll: () -> Unit
+	onMaxScroll: () -> Unit,
+	navController: NavController
 ) {
 	val lazyVerticalGridState = rememberLazyGridState()
 	val firstVisibleItemIndex by remember { derivedStateOf { lazyVerticalGridState.firstVisibleItemIndex } }
@@ -161,8 +166,8 @@ fun BooksGridScreen(
 		contentPadding = PaddingValues(6.dp),
 		horizontalArrangement = Arrangement.spacedBy(12.dp),
 	) {
-		itemsIndexed(books) { _, book ->
-			BooksCard(book = book, modifier)
+		itemsIndexed(books) { index, book ->
+			BooksCard(book = book, modifier, navController, index)
 		}
 	}
 }
@@ -187,6 +192,7 @@ fun HomeBooksScreen(
 	retryAction: () -> Unit,
 	onMaxScroll: () -> Unit,
 	modifier: Modifier,
+	navController: NavController,
 ) {
 	when (booksUiState) {
 		is BooksUiState.Loading -> LoadingScreen(modifier)
@@ -196,6 +202,7 @@ fun HomeBooksScreen(
 					books = booksUiState.bookSearch,
 					modifier = modifier,
 					onMaxScroll = onMaxScroll,
+					navController = navController,
 				)
 			}
 		}
@@ -205,8 +212,10 @@ fun HomeBooksScreen(
 }
 
 @Composable
-fun HomeScreen() {
-	val homeViewModel: HomeViewModel = viewModel(factory = HomeViewModel.Factory)
+fun HomeScreen(
+	homeViewModel: HomeViewModel,
+	navController: NavController
+) {
 	var textFieldValue by remember { mutableStateOf("") }
 	Scaffold(
 		modifier = Modifier.fillMaxSize(),
@@ -272,7 +281,8 @@ fun HomeScreen() {
 				booksUiState = homeViewModel.booksUiState,
 				retryAction = { homeViewModel.getBooks() },
 				modifier = Modifier,
-				onMaxScroll = { homeViewModel.addBooks() }
+				onMaxScroll = { homeViewModel.addBooks() },
+				navController = navController,
 			)
 		}
 	}

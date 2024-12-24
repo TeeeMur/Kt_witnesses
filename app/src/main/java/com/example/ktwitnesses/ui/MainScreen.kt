@@ -12,6 +12,8 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import com.example.ktwitnesses.HomeViewModel
+import com.example.ktwitnesses.ui.bookScreen.BookScreen
 import com.example.ktwitnesses.ui.cartScreen.AddressSelectionScreen
 import com.example.ktwitnesses.ui.cartScreen.CartScreen
 import com.example.ktwitnesses.ui.cartScreen.OrderScreen
@@ -27,6 +29,7 @@ fun MainScreen() {
 	val currentBackStackEntry = navController.currentBackStackEntryAsState().value
 	val currentRoute = currentBackStackEntry?.destination?.route
 	val addressViewModel: AddressViewModel = viewModel()
+	val homeViewModel: HomeViewModel = viewModel(factory = HomeViewModel.Factory)
 	val screensWithBottomNav = listOf(
 		NavRoutes.Home.route,
 		NavRoutes.Favorite.route,
@@ -48,7 +51,7 @@ fun MainScreen() {
 			modifier = Modifier.padding(paddingValues)
 		) {
 			composable(NavRoutes.Home.route) {
-				HomeScreen()
+				HomeScreen(homeViewModel, navController)
 			}
 			composable(NavRoutes.Favorite.route) { FavouriteScreen() }
 			composable(NavRoutes.Cart.route) {
@@ -86,6 +89,11 @@ fun MainScreen() {
 				)
 			}
 			composable(NavRoutes.Profile.route) { ProfileScreen() }
+			composable(NavRoutes.BookCard.route + "/{bookid}") { stackEntry ->
+				val bookid = stackEntry.arguments?.getInt("bookid")!!
+				BookScreen(bookid = bookid, onLike = {}, homeViewModel = homeViewModel,
+					navController = navController)
+			}
 		}
 	}
 }
