@@ -41,5 +41,8 @@ sealed class NavRoutes(
 		route = "bookCard_screen",
 		image = Icons.Outlined.Add,
 		title = "Book")
+	data object Success : NavRoutes(
+		route = "success_screen",
+		title = "Success")
 }
 

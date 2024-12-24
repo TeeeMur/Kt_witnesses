@@ -143,6 +143,9 @@ fun MainScreen() {
 				BookScreen(bookid = bookid, onLike = {}, homeViewModel = homeViewModel,
 					navController = navController, cartViewModel = cartViewModel)
 			}
+			composable(NavRoutes.Profile.route) {
+				AuthScreen()
+			}
 		}
 	}
 }
