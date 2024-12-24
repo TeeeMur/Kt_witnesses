@@ -26,6 +26,9 @@ sealed class NavRoutes(
 		route = "cart_screen",
 		image = Icons.Outlined.ShoppingCart,
 		title = "Cart")
+	data object Checkout : NavRoutes(
+		route = "checkout_screen",
+		title = "Checkout")
 	data object Profile : NavRoutes(
 		route = "profile_screen",
 		image = Icons.Outlined.Person,

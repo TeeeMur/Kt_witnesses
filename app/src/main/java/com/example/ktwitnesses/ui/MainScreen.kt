@@ -6,6 +6,8 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxHeight
+import CartViewModel
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -44,6 +46,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import com.example.ktwitnesses.CheckoutViewModel
 import com.example.ktwitnesses.HomeViewModel
 import com.example.ktwitnesses.R
 
@@ -53,6 +56,8 @@ fun MainScreen() {
 	val currentBackStackEntry = navController.currentBackStackEntryAsState().value
 	val currentRoute = currentBackStackEntry?.destination?.route
 	val addressViewModel: AddressViewModel = viewModel()
+	val cartViewModel: CartViewModel = viewModel()
+	val checkoutViewModel: CheckoutViewModel = viewModel()
 	val screensWithBottomNav = listOf(
 		NavRoutes.Home.route,
 		NavRoutes.Favorite.route,
@@ -140,23 +145,13 @@ fun MainScreen() {
 							booksUiState = homeViewModel.booksUiState,
 							retryAction = { homeViewModel.getBooks() },
 							modifier = Modifier,
-							onMaxScroll = { homeViewModel.addBooks() }
+							onMaxScroll = { homeViewModel.addBooks() },
+							cartViewModel = cartViewModel
 						)
 					}
 				}
 			}
 			composable(NavRoutes.Favorite.route) { FavouriteScreen() }
-			composable(NavRoutes.Cart.route) {
-				CartScreen(
-					onProceedToOrder = { navController.navigate(NavRoutes.Order.route) }
-				)
-			}
-			composable(NavRoutes.Order.route) {
-				OrderScreen(
-					navController = navController,
-					onBackPressed = { navController.popBackStack() }
-				)
-			}
 			composable("address_selection") {
 				val addresses = addressViewModel.addresses.collectAsState().value
 				val selectedAddress = addressViewModel.selectedAddress.collectAsState().value
@@ -180,7 +175,57 @@ fun MainScreen() {
 					onBack = { navController.popBackStack() }
 				)
 			}
+			composable(NavRoutes.Cart.route) {
+				Scaffold(
+					modifier = Modifier.fillMaxSize(),
+					topBar = {
+						TopAppBar(
+							title = {
+								Text(text = stringResource(id = R.string.nav_routes_cart))
+							}
+						)
+					}
+
+				) {
+					Surface(
+						modifier = Modifier
+							.fillMaxSize()
+							.padding(it),
+						color = MaterialTheme.colors.background
+					) {
+						CartScreen(cartViewModel, checkoutViewModel, {navController.navigate(NavRoutes.Checkout.route)})
+					}
+				}
+			}
+			composable(NavRoutes.Order.route) {
+				OrderScreen(
+					navController = navController,
+					onBackPressed = { navController.popBackStack() }
+				)
+			}
 			composable(NavRoutes.Profile.route) { ProfileScreen() }
+			composable(NavRoutes.Checkout.route) {
+				Scaffold(
+					modifier = Modifier.fillMaxSize(),
+					topBar = {
+						TopAppBar(
+							title = {
+								Text(text = stringResource(id = R.string.making_order))
+							}
+						)
+					}
+
+				) {
+					Surface(
+						modifier = Modifier
+							.fillMaxSize()
+							.padding(it),
+						color = MaterialTheme.colors.background
+					) {
+						CheckoutScreen(checkoutViewModel)
+					}
+				}
+			}
 		}
 	}
 }

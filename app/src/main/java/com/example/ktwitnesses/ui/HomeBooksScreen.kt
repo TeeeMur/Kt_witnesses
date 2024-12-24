@@ -1,10 +1,12 @@
 package com.example.ktwitnesses.ui
 
+import CartViewModel
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -22,6 +24,7 @@ import androidx.compose.material.Button
 import androidx.compose.material.ButtonDefaults
 //noinspection UsingMaterialAndMaterial3Libraries
 import androidx.compose.material.Card
+import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Scaffold
 import androidx.compose.material.TopAppBar
@@ -39,6 +42,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import com.example.ktwitnesses.BooksUiState
@@ -60,10 +64,12 @@ fun ErrorScreen(retryAction: () -> Unit, modifier: Modifier = Modifier) {
 	}
 }
 
+@Suppress("NonSkippableComposable")
 @Composable
 fun BooksCard(
 	book: Book,
-	modifier: Modifier
+	modifier: Modifier,
+	cartViewModel: CartViewModel = viewModel()
 ) {
 	Card(
 		modifier = modifier
@@ -112,23 +118,32 @@ fun BooksCard(
 					softWrap = false,
 				)
 			}
-			Text(
-				text = book.price.toString() + stringResource(R.string.price_currency),
-				fontSize = 18.sp,
-				textAlign = TextAlign.Start,
-				modifier = modifier
-					.padding(top = 4.dp, bottom = 6.dp)
-					.fillMaxWidth(),
-			)
+			Row {
+				Text(
+					text = book.price.toString() + stringResource(R.string.price_currency),
+					fontSize = 18.sp,
+					textAlign = TextAlign.Start,
+					modifier = modifier
+						.padding(top = 4.dp, bottom = 6.dp),
+				)
+				Button(
+					modifier = modifier
+						.padding(4.dp)
+						.fillMaxWidth(),
+					onClick = { cartViewModel.addToCart(book);}) {
+				}
+			}
 		}
 	}
 }
 
+@Suppress("NonSkippableComposable")
 @Composable
 fun BooksGridScreen(
 	books: List<Book>,
 	modifier: Modifier,
-	onMaxScroll: () -> Unit
+	onMaxScroll: () -> Unit,
+	cartViewModel: CartViewModel = viewModel()
 ) {
 	val lazyVerticalGridState = rememberLazyGridState()
 	val firstVisibleItemIndex by remember { derivedStateOf { lazyVerticalGridState.firstVisibleItemIndex } }
@@ -143,7 +158,7 @@ fun BooksGridScreen(
 		horizontalArrangement = Arrangement.spacedBy(12.dp),
 	) {
 		itemsIndexed(books) { _, book ->
-			BooksCard(book = book, modifier)
+			BooksCard(book = book, modifier, cartViewModel)
 		}
 	}
 }
@@ -168,6 +183,7 @@ fun HomeBooksScreen(
 	retryAction: () -> Unit,
 	onMaxScroll: () -> Unit,
 	modifier: Modifier,
+	cartViewModel: CartViewModel = viewModel()
 ) {
 	when (booksUiState) {
 		is BooksUiState.Loading -> LoadingScreen(modifier)
@@ -177,6 +193,7 @@ fun HomeBooksScreen(
 					books = booksUiState.bookSearch,
 					modifier = modifier,
 					onMaxScroll = onMaxScroll,
+					cartViewModel = cartViewModel
 				)
 			}
 		}
