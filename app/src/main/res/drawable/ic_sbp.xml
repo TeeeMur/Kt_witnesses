@@ -1,0 +1,61 @@
+﻿<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<Aps>
+	<Group>
+		<Page Width="64" Height="32" PaperTray="0">
+			<Canvas>
+				<Canvas>
+					<Clip>
+						<Path FillMode="Winding">
+							<PathFigure IsClosed="True">
+								<PolyLine LineColor="#FF000000">
+									<Point X="0" Y="32" />
+									<Point X="0" Y="-0.25" />
+								</PolyLine>
+								<PolyLine LineColor="#FF000000">
+									<Point X="0" Y="-0.25" />
+									<Point X="64.5" Y="-0.25" />
+								</PolyLine>
+								<PolyLine LineColor="#FF000000">
+									<Point X="64.5" Y="-0.25" />
+									<Point X="64.5" Y="32" />
+								</PolyLine>
+								<PolyLine LineColor="#FF000000">
+									<Point X="64.5" Y="32" />
+									<Point X="0" Y="32" />
+								</PolyLine>
+							</PathFigure>
+						</Path>
+					</Clip>
+					<Path FillMode="Winding" RenderTransform="1 0 0 -1 0 32">
+						<Brush>
+							<TextureBrush ResourceId="1" Transform="1 -0 0 1 0 0.25" WrapMode="Tile" Opacity="1">
+								<ImageArea X="0" Y="0" Width="0" Height="0" />
+							</TextureBrush>
+						</Brush>
+						<PathFigure IsClosed="True">
+							<PolyLine LineColor="#FF000000">
+								<Point X="0" Y="32.25" />
+								<Point X="0" Y="32.25" />
+							</PolyLine>
+							<PolyLine LineColor="#FF000000">
+								<Point X="0" Y="32.25" />
+								<Point X="64.5" Y="32.25" />
+							</PolyLine>
+							<PolyLine LineColor="#FF000000">
+								<Point X="64.5" Y="32.25" />
+								<Point X="64.5" Y="0" />
+							</PolyLine>
+							<PolyLine LineColor="#FF000000">
+								<Point X="64.5" Y="0" />
+								<Point X="0" Y="0" />
+							</PolyLine>
+						</PathFigure>
+					</Path>
+				</Canvas>
+			</Canvas>
+		</Page>
+	</Group>
+	<Resources>
+		<Resource Id="1">iVBORw0KGgoAAAANSUhEUgAAAEAAAAAgCAYAAACinX6EAAAACXBIWXMAAAsSAAALEgHS3X78AAAAH0lEQVR4nOzBAQ0AAADCoPdPbQ8HFAAAAAAAAADwbgAAAP//s/1KFgAAAAZJREFUAwAgIAABWRqyJgAAAABJRU5ErkJgggAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==</Resource>
+	</Resources>
+</Aps>
