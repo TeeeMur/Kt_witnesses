@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "255174885265",
+    "project_id": "database-5ee68",
+    "storage_bucket": "database-5ee68.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:255174885265:android:00dd8c17017fb811a42430",
+        "android_client_info": {
+          "package_name": "com.example.ktwitnesses"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCMUbzRZwgwEOWNg6I3ENelswB3ZSyzXtQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
