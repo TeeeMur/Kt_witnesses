@@ -34,5 +34,9 @@ sealed class NavRoutes(
 		route = "checkout_screen",
 		image = Icons.Filled.ShoppingCart,
 		title = "Order")
+	data object Success : NavRoutes(
+		route = "success_screen",
+		title = "Success")
+
 }
 

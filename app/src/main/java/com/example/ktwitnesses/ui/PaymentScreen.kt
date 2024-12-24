@@ -20,11 +20,13 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.MaterialTheme
+import androidx.compose.material3.Button
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import com.example.ktwitnesses.R
+import com.example.ktwitnesses.data.Book
 
 @Composable
 fun PaymentScreen() {
@@ -81,6 +83,27 @@ fun MethodCard(title: String, iconResId: Int) {
                     .size(40.dp)
                     .padding(end = 8.dp)
             )
+        }
+    }
+}
+@Composable
+fun CartItem(book: Book, onRemove: () -> Unit) {
+    Card(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(vertical = 8.dp),
+    ) {
+        Column(
+            modifier = Modifier.padding(16.dp)
+        ) {
+            Text(text = book.title.toString(), style = MaterialTheme.typography.h6)
+            //Text(text = "Автор: ${book.author}", style = MaterialTheme.typography.body1)
+            Text(text = "Цена: ${300} руб.", style = MaterialTheme.typography.body1)
+            Text(text = "Количество: ${0}", style = MaterialTheme.typography.body1)
+            Spacer(modifier = Modifier.height(8.dp))
+            Button(onClick = onRemove) {
+                Text("Удалить")
+            }
         }
     }
 }

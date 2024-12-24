@@ -27,91 +27,97 @@ import com.example.ktwitnesses.R
 
 @Composable
 fun MainScreen() {
-	val navController = rememberNavController()
-	val currentBackStackEntry = navController.currentBackStackEntryAsState().value
-	val currentRoute = currentBackStackEntry?.destination?.route
-	val addressViewModel: AddressViewModel = viewModel()
-	val screensWithBottomNav = listOf(
-		NavRoutes.Home.route,
-		NavRoutes.Favorite.route,
-		NavRoutes.Cart.route,
-		NavRoutes.Profile.route
-	)
+    val navController = rememberNavController()
+    val currentBackStackEntry = navController.currentBackStackEntryAsState().value
+    val currentRoute = currentBackStackEntry?.destination?.route
+    val addressViewModel: AddressViewModel = viewModel()
+    val screensWithBottomNav = listOf(
+        NavRoutes.Home.route,
+        NavRoutes.Favorite.route,
+        NavRoutes.Cart.route,
+        NavRoutes.Profile.route
+    )
 
-	Scaffold(
-		bottomBar = {
-			if (currentRoute in screensWithBottomNav) {
-				BottomNavigationBar(navController = navController)
-			}
-		}
+    Scaffold(
+        bottomBar = {
+            if (currentRoute in screensWithBottomNav) {
+                BottomNavigationBar(navController = navController)
+            }
+        }
 
-	)
-	{ paddingValues ->
-		NavHost(
-			navController = navController,
-			startDestination = NavRoutes.Home.route,
-			modifier = Modifier.padding(paddingValues)
-		) {
-			composable(NavRoutes.Home.route) { val booksViewModel: BooksViewModel =
-				viewModel(factory = BooksViewModel.Factory)
-				Scaffold(
-					modifier = Modifier.fillMaxSize(),
-					topBar = {
-						TopAppBar (
-							title = {
-								Text(text = stringResource(id = R.string.app_name))
-							}
-						)
-					}
-				) {
-					Surface(modifier = Modifier
-						.fillMaxSize()
-						.padding(it),
-						color = MaterialTheme.colors.background
-					) {
-						HomeScreen(
-							booksUiState = booksViewModel.booksUiState,
-							retryAction = { booksViewModel.getBooks() },
-							modifier = Modifier
-						)
-					}
-				} }
-			composable(NavRoutes.Favorite.route) { FavouriteScreen() }
-			composable(NavRoutes.Cart.route) {
-				CartScreen(
-					onProceedToOrder = { navController.navigate(NavRoutes.Order.route) }
-				)
-			}
-			composable(NavRoutes.Order.route) {
-				OrderScreen(
-					navController = navController,
-					onBackPressed = { navController.popBackStack() }
-				)
-			}
-			composable("address_selection") {
-				val addresses = addressViewModel.addresses.collectAsState().value
-				val selectedAddress = addressViewModel.selectedAddress.collectAsState().value
-				AddressSelectionScreen(
-					addresses = addresses,
-					selectedAddress = selectedAddress,
-					onBackPressed = { navController.popBackStack() },
-					onAddressSelected = { address ->
-						addressViewModel.selectAddress(address)
-					},
-					onAddAddress = {
-					},
+    )
+    { paddingValues ->
+        NavHost(
+            navController = navController,
+            startDestination = NavRoutes.Home.route,
+            modifier = Modifier.padding(paddingValues)
+        ) {
+            composable(NavRoutes.Home.route) {
+                val booksViewModel: BooksViewModel =
+                    viewModel(factory = BooksViewModel.Factory)
+                Scaffold(
+                    modifier = Modifier.fillMaxSize(),
+                    topBar = {
+                        TopAppBar(
+                            title = {
+                                Text(text = stringResource(id = R.string.app_name))
+                            }
+                        )
+                    }
+                ) {
+                    Surface(
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .padding(it),
+                        color = MaterialTheme.colors.background
+                    ) {
+                        HomeScreen(
+                            booksUiState = booksViewModel.booksUiState,
+                            retryAction = { booksViewModel.getBooks() },
+                            modifier = Modifier
+                        )
+                    }
+                }
+            }
+            composable(NavRoutes.Favorite.route) { FavouriteScreen() }
+            composable(NavRoutes.Cart.route) {
+                CartScreen(
+                    onProceedToOrder = { navController.navigate(NavRoutes.Order.route) }
+                )
+            }
+            composable(NavRoutes.Order.route) {
+                OrderScreen(
+                    navController = navController,
+                    onBackPressed = { navController.popBackStack() }
+                )
+            }
+            composable("address_selection") {
+                val addresses = addressViewModel.addresses.collectAsState().value
+                val selectedAddress = addressViewModel.selectedAddress.collectAsState().value
+                AddressSelectionScreen(
+                    addresses = addresses,
+                    selectedAddress = selectedAddress,
+                    onBackPressed = { navController.popBackStack() },
+                    onAddressSelected = { address ->
+                        addressViewModel.selectAddress(address)
+                    },
+                    onAddAddress = {
+                    },
 
-					// попытка сохранить новый адрес (не увенчалась успехом)
-					onSave = {
-						selectedAddress?.let { address ->
-							addressViewModel.selectAddress(address)
-							navController.popBackStack()
-						}
-					},
-					onBack = { navController.popBackStack() }
-				)
-			}
-				composable(NavRoutes.Profile.route) { ProfileScreen() }
-		}
-	}
+                    // попытка сохранить новый адрес (не увенчалась успехом)
+                    onSave = {
+                        selectedAddress?.let { address ->
+                            addressViewModel.selectAddress(address)
+                            navController.popBackStack()
+                        }
+                    },
+                    onBack = { navController.popBackStack() }
+                )
+            }
+            composable(NavRoutes.Profile.route) { ProfileScreen() }
+            composable(NavRoutes.Success.route) {
+
+            }
+        }
+    }
 }
