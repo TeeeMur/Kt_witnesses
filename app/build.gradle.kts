@@ -1,4 +1,5 @@
 plugins {
+	alias(libs.plugins.gms)
 	alias(libs.plugins.android.application)
 	alias(libs.plugins.jetbrains.kotlin.android)
 	kotlin("plugin.serialization") version "2.0.21"
@@ -51,6 +52,9 @@ android {
 }
 
 dependencies {
+
+	implementation(platform(libs.firebase.bom))
+	implementation(libs.firebase.auth)
 
 	implementation(libs.retrofit)
 	implementation(libs.converter.gson)
