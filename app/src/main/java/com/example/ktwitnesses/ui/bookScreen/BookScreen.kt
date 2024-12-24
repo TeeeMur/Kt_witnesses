@@ -180,9 +180,9 @@ fun BookScreen(
 		) {
 			AsyncImage(
 				modifier = Modifier
-					.requiredHeight(240.dp)
+					.requiredHeight(420.dp)
 					.padding(vertical = 16.dp)
-
+					.fillMaxWidth(0.8f)
 					.clip(RoundedCornerShape(24.dp)),
 				model = coil.request.ImageRequest.Builder(context = LocalContext.current)
 					.data(book.imageLink?.replace("http", "https"))
@@ -191,7 +191,7 @@ fun BookScreen(
 				error = painterResource(id = R.drawable.ic_book_96),
 				placeholder = painterResource(id = R.drawable.loading_img),
 				contentDescription = stringResource(id = R.string.content_description),
-				contentScale = ContentScale.FillWidth
+				contentScale = ContentScale.Crop
 			)
 			Row(
 				horizontalArrangement = Arrangement.SpaceBetween,
@@ -212,7 +212,7 @@ fun BookScreen(
 				}
 			}
 			book.authors?.let{
-				Text(text = book.authors[0])
+				Text(text = book.authors[0], modifier = Modifier.fillMaxWidth(), textAlign = TextAlign.Start)
 			}
 			book.description?.let{
 				Text(text = book.description)
