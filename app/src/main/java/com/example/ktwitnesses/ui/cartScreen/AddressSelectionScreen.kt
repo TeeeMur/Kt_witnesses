@@ -1,4 +1,4 @@
-package com.example.ktwitnesses.ui
+package com.example.ktwitnesses.ui.cartScreen
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border

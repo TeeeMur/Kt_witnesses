@@ -23,6 +23,7 @@ engageCore = "1.5.5"
 datastoreCoreAndroid = "1.1.1"
 gmsVersion = "4.4.2"
 bomVersion = "33.7.0"
+firebaseCommonKtx = "21.0.0"
 
 [libraries]
 firebase-bom = { group = "com.google.firebase", name = "firebase-bom", version.ref = "bomVersion" }
@@ -54,6 +55,7 @@ firebase-crashlytics-buildtools = { group = "com.google.firebase", name = "fireb
 androidx-ui-test-android = { group = "androidx.compose.ui", name = "ui-test-android", version.ref = "uiTestAndroid" }
 engage-core = { group = "com.google.android.engage", name = "engage-core", version.ref = "engageCore" }
 androidx-datastore-core-android = { group = "androidx.datastore", name = "datastore-core-android", version.ref = "datastoreCoreAndroid" }
+firebase-common-ktx = { group = "com.google.firebase", name = "firebase-common-ktx", version.ref = "firebaseCommonKtx" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
