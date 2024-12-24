@@ -7,6 +7,8 @@ data class Book(
 	val price: Int,
 	val previewLink: String?,
 	val imageLink: String?,
+	val description: String?,
+	val genre: List<String>?,
 )
 
 data class BookCart(

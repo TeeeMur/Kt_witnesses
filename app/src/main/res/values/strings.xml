@@ -6,4 +6,6 @@
     <string name="retry">Retry</string>
     <string name="loading">Loading</string>
     <string name="content_description">Book</string>
+    <string name="price_currency">₽</string>
+    <string name="searchfield_placeholder">Начните искать…</string>
 </resources>

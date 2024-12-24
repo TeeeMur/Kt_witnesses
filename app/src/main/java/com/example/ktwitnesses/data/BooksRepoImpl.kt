@@ -11,6 +11,12 @@ class BooksRepoImpl (
 		maxResults: Int
 	): List<Book> = bookService.bookSearch(query, maxResults).items.map { items ->
 		Book(
+			authors = items.volumeInfo?.authors,
+			title = items.volumeInfo?.title,
+			previewLink = items.volumeInfo?.previewLink,
+			imageLink = items.volumeInfo?.imageLinks?.thumbnail,
+			genre = items.volumeInfo?.categories,
+			description = items.volumeInfo?.description
 			id = items.id.toString(),
 			title = items.volumeInfo?.title,
 			previewLink = items.volumeInfo?.previewLink,

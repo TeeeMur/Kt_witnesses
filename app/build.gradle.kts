@@ -1,4 +1,5 @@
 plugins {
+	alias(libs.plugins.gms)
 	alias(libs.plugins.android.application)
 	alias(libs.plugins.jetbrains.kotlin.android)
 	kotlin("plugin.serialization") version "2.0.21"
@@ -52,6 +53,9 @@ android {
 
 dependencies {
 
+	implementation(platform(libs.firebase.bom))
+	implementation(libs.firebase.auth)
+
 	implementation(libs.retrofit)
 	implementation(libs.converter.gson)
 	implementation(libs.coil.compose)
@@ -70,7 +74,12 @@ dependencies {
 	implementation(libs.androidx.ui.graphics)
 	implementation(libs.androidx.ui.tooling.preview)
 	implementation(libs.androidx.material3)
-	testImplementation(libs.junit)
+    implementation(libs.volley)
+    implementation(libs.firebase.crashlytics.buildtools)
+    implementation(libs.androidx.ui.test.android)
+    implementation(libs.engage.core)
+    implementation(libs.androidx.datastore.core.android)
+    testImplementation(libs.junit)
 	androidTestImplementation(libs.androidx.junit)
 	androidTestImplementation(libs.androidx.espresso.core)
 	androidTestImplementation(platform(libs.androidx.compose.bom))
