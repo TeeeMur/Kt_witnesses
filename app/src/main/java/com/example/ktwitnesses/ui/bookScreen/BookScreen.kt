@@ -2,6 +2,7 @@ package com.example.ktwitnesses.ui.bookScreen
 
 import CartViewModel
 import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
@@ -27,7 +28,6 @@ import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.outlined.ArrowBack
 import androidx.compose.material.icons.automirrored.outlined.ArrowForward
-import androidx.compose.material.icons.outlined.ArrowForward
 import androidx.compose.material.icons.outlined.FavoriteBorder
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -212,17 +212,18 @@ fun BookScreen(
 				}
 			}
 			book.authors?.let{
-				Text(text = book.authors[0], modifier = Modifier.fillMaxWidth(), textAlign = TextAlign.Start)
+				Text(text = book.authors[0], modifier = Modifier.fillMaxWidth(), textAlign = TextAlign.Start, fontSize = 16.sp)
 			}
 			book.description?.let{
-				Text(text = book.description)
+				Text(text = book.description, maxLines = 6)
 			}
 			book.genre?.let{
 				FlowRow(
+					modifier = Modifier.fillMaxWidth(),
 					maxItemsInEachRow = 3
 				) {
 					book.genre.forEach {
-						Text(text = it)
+						Text(text = it, fontSize = 16.sp, modifier = Modifier.border(1.dp, Color.Black, RoundedCornerShape(8.dp)).padding(4.dp))
 					}
 				}
 			}
