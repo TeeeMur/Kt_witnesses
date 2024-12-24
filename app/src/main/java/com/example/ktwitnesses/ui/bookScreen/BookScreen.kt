@@ -1,4 +1,4 @@
-package com.example.ktwitnesses.ui.BookScreen
+package com.example.ktwitnesses.ui.bookScreen
 
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
@@ -12,18 +12,20 @@ import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.outlined.ArrowBack
-import androidx.compose.material.icons.outlined.Close
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import com.example.ktwitnesses.BooksUiState
+import com.example.ktwitnesses.HomeViewModel
 import com.example.ktwitnesses.data.Book
 
 @Composable
 fun BookScreen(
-	book: Book,
+	bookid: Int,
 	onLike: () -> Unit,
-	onAddToCart: (add: Boolean) -> Unit,
+	homeViewModel: HomeViewModel,
 	navigateToCart: () -> Unit,
 ) {
+	val book = (homeViewModel.booksUiState as BooksUiState.Success).bookSearch[bookid]
 	Scaffold(
 		topBar = {
 			Row() {

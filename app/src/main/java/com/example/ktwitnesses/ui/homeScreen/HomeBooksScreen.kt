@@ -2,6 +2,7 @@ package com.example.ktwitnesses.ui.homeScreen
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -84,7 +85,10 @@ fun BooksCard(
 		modifier = modifier
 			.padding(4.dp)
 			.fillMaxWidth()
-			.clip(RoundedCornerShape(topStart = 24.dp, topEnd = 24.dp)),
+			.clip(RoundedCornerShape(topStart = 24.dp, topEnd = 24.dp))
+			.clickable {
+
+			},
 		elevation = 0.dp
 	) {
 		Column(
