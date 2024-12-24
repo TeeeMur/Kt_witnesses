@@ -8,10 +8,10 @@
             <InsightsFilterSettings>
               <option name="connection">
                 <ConnectionSetting>
-                  <option name="appId" value="PLACEHOLDER" />
-                  <option name="mobileSdkAppId" value="" />
-                  <option name="projectId" value="" />
-                  <option name="projectNumber" value="" />
+                  <option name="appId" value="com.example.ktwitnesses" />
+                  <option name="mobileSdkAppId" value="1:255174885265:android:00dd8c17017fb811a42430" />
+                  <option name="projectId" value="database-5ee68" />
+                  <option name="projectNumber" value="255174885265" />
                 </ConnectionSetting>
               </option>
               <option name="signal" value="SIGNAL_UNSPECIFIED" />

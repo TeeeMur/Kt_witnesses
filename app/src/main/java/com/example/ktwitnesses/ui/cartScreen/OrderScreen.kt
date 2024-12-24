@@ -1,6 +1,6 @@
 @file:Suppress("PreviewAnnotationInFunctionWithParameters")
 
-package com.example.ktwitnesses.ui
+package com.example.ktwitnesses.ui.cartScreen
 
 import AddressViewModel
 import com.example.ktwitnesses.OrderViewModel

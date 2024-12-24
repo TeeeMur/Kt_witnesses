@@ -6,8 +6,6 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxHeight
-import CartViewModel
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -46,7 +44,6 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
-import com.example.ktwitnesses.CheckoutViewModel
 import com.example.ktwitnesses.HomeViewModel
 import com.example.ktwitnesses.R
 
@@ -56,8 +53,6 @@ fun MainScreen() {
 	val currentBackStackEntry = navController.currentBackStackEntryAsState().value
 	val currentRoute = currentBackStackEntry?.destination?.route
 	val addressViewModel: AddressViewModel = viewModel()
-	val cartViewModel: CartViewModel = viewModel()
-	val checkoutViewModel: CheckoutViewModel = viewModel()
 	val screensWithBottomNav = listOf(
 		NavRoutes.Home.route,
 		NavRoutes.Favorite.route,
@@ -79,79 +74,20 @@ fun MainScreen() {
 			modifier = Modifier.padding(paddingValues)
 		) {
 			composable(NavRoutes.Home.route) {
-				val homeViewModel: HomeViewModel = viewModel(factory = HomeViewModel.Factory)
-				var textFieldValue by remember { mutableStateOf("") }
-				Scaffold(
-					modifier = Modifier.fillMaxSize(),
-					topBar = {
-						TopAppBar(
-							modifier = Modifier.padding(top = 4.dp, bottom = 4.dp),
-							title = {},
-							actions = {
-								Row(
-									modifier = Modifier.fillMaxWidth()
-										.padding(end=12.dp),
-									horizontalArrangement = Arrangement.SpaceBetween,
-									verticalAlignment = Alignment.CenterVertically,
-								) {
-									OutlinedTextField(
-										modifier = Modifier
-											.requiredWidth(300.dp)
-											.border(2.dp, Color.Black,RoundedCornerShape(16.dp)),
-										value = textFieldValue,
-										onValueChange = { textFieldValue = it },
-										placeholder = {
-											Text(
-												text = stringResource(R.string.searchfield_placeholder),
-												fontSize = 14.sp
-											)
-										},
-										colors = TextFieldDefaults.outlinedTextFieldColors(
-											focusedBorderColor = Color.Unspecified,
-											unfocusedBorderColor = Color.Unspecified
-										),
-										singleLine = true
-									)
-									IconButton(
-										onClick = {},
-										modifier = Modifier
-										.fillMaxHeight()
-										.aspectRatio(1f)
-										.border(
-											2.dp,
-											Color.Black,
-											RoundedCornerShape(10.dp)
-										),
-									) {
-										Icon(
-											imageVector = Icons.AutoMirrored.Filled.List,
-											contentDescription = "Сортировка/Фильтры",
-										)
-									}
-								}
-							},
-							backgroundColor = Color.White,
-							elevation = 0.dp,
-						)
-					}
-				) {
-					Surface(
-						modifier = Modifier
-							.fillMaxSize()
-							.padding(it),
-						color = MaterialTheme.colors.background
-					) {
-						HomeBooksScreen(
-							booksUiState = homeViewModel.booksUiState,
-							retryAction = { homeViewModel.getBooks() },
-							modifier = Modifier,
-							onMaxScroll = { homeViewModel.addBooks() },
-							cartViewModel = cartViewModel
-						)
-					}
-				}
+				HomeScreen(homeViewModel, navController)
 			}
 			composable(NavRoutes.Favorite.route) { FavouriteScreen() }
+			composable(NavRoutes.Cart.route) {
+				CartScreen(
+					onProceedToOrder = { navController.navigate(NavRoutes.Order.route) }
+				)
+			}
+			composable(NavRoutes.Order.route) {
+				OrderScreen(
+					navController = navController,
+					onBackPressed = { navController.popBackStack() }
+				)
+			}
 			composable("address_selection") {
 				val addresses = addressViewModel.addresses.collectAsState().value
 				val selectedAddress = addressViewModel.selectedAddress.collectAsState().value
@@ -204,27 +140,10 @@ fun MainScreen() {
 				)
 			}
 			composable(NavRoutes.Profile.route) { ProfileScreen() }
-			composable(NavRoutes.Checkout.route) {
-				Scaffold(
-					modifier = Modifier.fillMaxSize(),
-					topBar = {
-						TopAppBar(
-							title = {
-								Text(text = stringResource(id = R.string.making_order))
-							}
-						)
-					}
-
-				) {
-					Surface(
-						modifier = Modifier
-							.fillMaxSize()
-							.padding(it),
-						color = MaterialTheme.colors.background
-					) {
-						CheckoutScreen(checkoutViewModel)
-					}
-				}
+			composable(NavRoutes.BookCard.route + "/{bookid}") { stackEntry ->
+				val bookid = stackEntry.arguments?.getInt("bookid")!!
+				BookScreen(bookid = bookid, onLike = {}, homeViewModel = homeViewModel,
+					navController = navController)
 			}
 		}
 	}

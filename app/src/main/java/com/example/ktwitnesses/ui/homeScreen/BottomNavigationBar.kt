@@ -1,4 +1,4 @@
-package com.example.ktwitnesses.ui
+package com.example.ktwitnesses.ui.homeScreen
 
 import androidx.compose.material3.Icon
 import androidx.compose.material3.NavigationBar
@@ -10,6 +10,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.navigation.NavController
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.compose.currentBackStackEntryAsState
+import com.example.ktwitnesses.ui.NavRoutes
 
 @Composable
 fun BottomNavigationBar(navController: NavController) {
