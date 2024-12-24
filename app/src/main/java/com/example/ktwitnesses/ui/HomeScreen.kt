@@ -180,8 +180,3 @@ fun CartScreen(
 		}
 	}
 }
-
-@Composable
-fun ProfileScreen() {
-	Text("Profile")
-}
