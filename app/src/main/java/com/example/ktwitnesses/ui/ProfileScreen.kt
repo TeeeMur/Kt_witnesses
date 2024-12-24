@@ -26,7 +26,7 @@ fun ProfileScreen() {
             TopAppBar(
                 title = {},
                 navigationIcon = {
-                    IconButton(onClick = { /* Handle back navigation */ }) {
+                    IconButton(onClick = { }) {
                         Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back")
                     }
                 },
@@ -44,7 +44,6 @@ fun ProfileScreen() {
         ) {
             Spacer(modifier = Modifier.height(24.dp))
 
-            // Profile header
             Row(
                 verticalAlignment = Alignment.CenterVertically
             ) {
@@ -67,19 +66,13 @@ fun ProfileScreen() {
                     )
                 }
             }
-
             Spacer(modifier = Modifier.height(32.dp))
-
-            // Menu items
-            MenuItem(title = "Мои заказы") { /* Navigate to orders */ }
-            MenuItem(title = "Отзывы") { /* Navigate to reviews */ }
-            MenuItem(title = "Возвраты") { /* Navigate to returns */ }
-
+            MenuItem(title = "Мои заказы") { }
+            MenuItem(title = "Отзывы") { }
+            MenuItem(title = "Возвраты") { }
             Spacer(modifier = Modifier.weight(1f))
-
-            // Logout button
             Button(
-                onClick = { /* Handle logout */ },
+                onClick = {},
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(bottom = 16.dp)

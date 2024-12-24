@@ -97,7 +97,6 @@ fun CartItem(book: Book, onRemove: () -> Unit) {
             modifier = Modifier.padding(16.dp)
         ) {
             Text(text = book.title.toString(), style = MaterialTheme.typography.h6)
-            //Text(text = "Автор: ${book.author}", style = MaterialTheme.typography.body1)
             Text(text = "Цена: ${300} руб.", style = MaterialTheme.typography.body1)
             Text(text = "Количество: ${0}", style = MaterialTheme.typography.body1)
             Spacer(modifier = Modifier.height(8.dp))
